@@ -26,8 +26,20 @@ const getCat = async (id, next) => {
     next(httpError('Database error', 500));
   }
 };
-
+const addCat = async (name, weight, owner, filename, birthdate, next ) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'INSERT INTO wop_cat (name, weight, owner, filename, birthdate) VALUES (?, ?, ?, ?, ?)',
+      [name, weight, owner, filename, birthdate]
+    );
+    return rows;
+  } catch (e) {
+    console.error('addCat error', e.message);
+    next(httpError('Database error', 500));
+  }
+};
 module.exports = {
   getAllCats,
   getCat,
+  addCat,
 };
