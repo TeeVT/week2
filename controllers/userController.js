@@ -1,6 +1,8 @@
 'use strict';
+const { validationResult } = require('express-validator');
 // userController
 const { getAllUsers, getUser, addUser } = require('../models/userModel');
+const { httpError } = require('../utils/errors');
 
 const user_list_get = async (req, res, next) => {
   try {
@@ -31,6 +33,12 @@ const user_get = async (req, res, next) => {
 };
 
 const user_post = async (req, res, next) => {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    console.log('user_post_validation', errors.array());
+    next(httpError('invalid data', 400));
+    return;
+  }
   try{
   console.log('lomakkeesta', req.body);
   const {name, email, passwd} = req.body
@@ -41,7 +49,7 @@ const user_post = async (req, res, next) => {
       user_id: tulos.insertId,
     });
   } else {
-    next(httpError('no user found', 404));
+    next(httpError('no user found', 400));
   }
 } catch (e) {
   console.log('user_get error', e.message);
