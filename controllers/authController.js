@@ -8,7 +8,7 @@ const login = (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     console.log('login info', err, user, info);
     if (err || !user) {
-      next(httpError('Login error', 400));
+      next(httpError('Invalid username/password', 400));
       return;
     }
     req.login(user, { session: false }, (err) => {
@@ -16,7 +16,8 @@ const login = (req, res, next) => {
         next(httpError('Login error', 400));
         return;
       }
-      const token = jwt.sign(user, ',hb.ksjhgkj.df,b');
+      delete user.password;
+      const token = jwt.sign(user, 'homohomo');
       return res.json({ user, token });
     });
   })(req, res, next);
