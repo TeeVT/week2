@@ -54,11 +54,19 @@ const user_post = async (req, res, next) => {
 } catch (e) {
   console.log('user_get error', e.message);
   next(httpError('internal server error', 500));
-}
-};
+}};
 
+const checkToken = (req, res, next) => {
+  if (!req.user) {
+    next(new Error('token not valid'));
+  } else {
+    res.json({ user: req.user });
+  }
+ };
+ 
 module.exports = {
   user_list_get,
   user_get,
   user_post,
+  checkToken,
 };
