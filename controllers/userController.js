@@ -34,27 +34,29 @@ const user_get = async (req, res, next) => {
 
 const user_post = async (req, res, next) => {
   const errors = validationResult(req);
-  if(!errors.isEmpty()){
-    console.log('user_post_validation', errors.array());
+  if (!errors.isEmpty()) {
+    console.log('user_post validation', errors.array());
     next(httpError('invalid data', 400));
     return;
   }
-  try{
-  console.log('lomakkeesta', req.body);
-  const {name, email, passwd} = req.body
-  const tulos = await addUser(name, email, passwd, next);
-  if(tulos.affectedRows > 0){
-    res.json({
-      message: 'user added',
-      user_id: tulos.insertId,
-    });
-  } else {
-    next(httpError('no user found', 400));
+
+  try {
+    console.log('lomakkeesta', req.body);
+    const { name, email, passwd } = req.body;
+    const tulos = await addUser(name, email, passwd, next);
+    if (tulos.affectedRows > 0) {
+      res.json({
+        message: 'user added',
+        user_id: tulos.insertId,
+      });
+    } else {
+      next(httpError('No user inserted', 400));
+    }
+  } catch (e) {
+    console.log('user_post error', e.message);
+    next(httpError('internal server error', 500));
   }
-} catch (e) {
-  console.log('user_get error', e.message);
-  next(httpError('internal server error', 500));
-}};
+};
 
 const checkToken = (req, res, next) => {
   if (!req.user) {
@@ -62,8 +64,8 @@ const checkToken = (req, res, next) => {
   } else {
     res.json({ user: req.user });
   }
- };
- 
+};
+
 module.exports = {
   user_list_get,
   user_get,
