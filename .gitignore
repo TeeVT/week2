@@ -1,6 +1,5 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/macos,windows,node,visualstudiocode,webstorm
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,node,visualstudiocode,webstorm
+# Created by https://www.toptal.com/developers/gitignore/api/macos,windows,node,webstorm,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,node,webstorm,visualstudiocode
 
 ### macOS ###
 # General
@@ -303,8 +302,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows,node,visualstudiocode,webstorm
+# End of https://www.toptal.com/developers/gitignore/api/macos,windows,node,webstorm,visualstudiocode
 
+# ignore content of uploads folder
 uploads/*
+thumbnails/*
+# except one (empty) file to have the folder in version control
 !uploads/.gitkeep
-.env
+!thumbnails/.gitkeep
